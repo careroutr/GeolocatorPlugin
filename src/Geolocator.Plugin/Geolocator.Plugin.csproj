@@ -1,7 +1,11 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/2.0.54">
-
-	<PropertyGroup>
+  <PropertyGroup Condition=" '$(OS)' != 'Windows_NT' ">
+		<TargetFrameworks>netstandard1.0;netstandard2.0;MonoAndroid70;MonoAndroid71;MonoAndroid80;MonoAndroid81;MonoAndroid90;Xamarin.iOS10;Xamarin.TVOS10;Xamarin.Mac20</TargetFrameworks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' "> 
 		<TargetFrameworks>netstandard1.0;netstandard2.0;MonoAndroid70;MonoAndroid71;MonoAndroid80;MonoAndroid81;MonoAndroid90;Xamarin.iOS10;uap10.0.16299;Xamarin.TVOS10;Xamarin.Mac20</TargetFrameworks>
+  </PropertyGroup>
+	<PropertyGroup>
 		<AssemblyName>Plugin.Geolocator</AssemblyName>
 		<RootNamespace>Plugin.Geolocator</RootNamespace>
 		<Product>$(AssemblyName) ($(TargetFramework))</Product>
@@ -61,12 +65,10 @@
 	</ItemGroup>
 
 	<ItemGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
-    <PackageReference Include="Plugin.Permissions" Version="5.0.0-beta" />
 		<Compile Include="**\*.android.cs" />
 	</ItemGroup>
 
 	<ItemGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
-    <PackageReference Include="Plugin.Permissions" Version="5.0.0-beta" />
 		<Compile Include="**\*.apple.cs" />
 	</ItemGroup>
 
@@ -84,6 +86,4 @@
 	<ItemGroup>
 	  <PackageReference Include="Plugin.Permissions" Version="6.0.1" />
 	</ItemGroup>
-
-
 </Project>
