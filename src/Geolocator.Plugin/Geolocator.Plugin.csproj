@@ -88,4 +88,9 @@
 	</ItemGroup>
 
 
+	<ItemGroup>
+	  <PackageReference Include="Plugin.Permissions" Version="6.0.1" />
+	</ItemGroup>
+
+
 </Project>
