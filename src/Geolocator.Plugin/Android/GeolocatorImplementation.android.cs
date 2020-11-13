@@ -38,11 +38,19 @@ namespace Plugin.Geolocator
 			DesiredAccuracy = 100;
 		}
 
-		string[] Providers => Manager.GetProviders(enabledOnly: false).ToArray();
+		/// <summary>
+		/// All location providers on the device as array of strings (regardless of permission or enabled)
+		/// </summary>
+		string[] AllProviders => Manager.AllProviders?.ToArray() ?? new string[]{};
+		
+		/// <summary>
+		/// Location providers that app has permission to access (enabled or no) as array of strings
+		/// </summary>
+		string[] Providers => Manager.GetProviders(enabledOnly: false)?.ToArray() ?? new string[]{};
 		string[] IgnoredProviders => new string[] { LocationManager.PassiveProvider, "local_database" };
 
 		/// <summary>
-		/// Gets or sets the location manager providers to ignore when getting postition
+		/// Gets or sets the location manager providers to ignore when getting position
 		/// </summary>
 		public static string[] ProvidersToUse { get; set; } = new string[] { };
 
@@ -83,12 +91,14 @@ namespace Plugin.Geolocator
 
 
 		/// <inheritdoc/>
-		public bool IsGeolocationAvailable => Providers.Length > 0;
+		public bool IsGeolocationAvailable => AllProviders.Length > 0;
 
 
 		/// <inheritdoc/>
-		public bool IsGeolocationEnabled => Providers.Any(p => !IgnoredProviders.Contains(p) &&
-			Manager.IsProviderEnabled(p));
+		public bool IsGeolocationEnabled => AllProviders.Any(p =>
+		{
+			return !IgnoredProviders.Contains(p) && Manager.IsProviderEnabled(p);
+		});
 
 
 		/// <summary>
